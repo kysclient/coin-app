@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "includes": ["styled-components.d.ts"],
     "target": "es5",
     "lib": [
       "dom",
