@@ -1,10 +1,11 @@
-import {Link, Route, Switch, useLocation, useParams, useRouteMatch} from "react-router-dom";
+import {Link, Route, Switch, useHistory, useLocation, useParams, useRouteMatch} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
 import {useQuery} from "react-query";
 import {fetchCoinInfo, fetchCoinTickers} from "../api";
+import {Helmet} from "react-helmet";
 
 interface RouteParams {
     coinId: string;
@@ -24,6 +25,7 @@ export const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `
 export const Title = styled.h1`
   color: ${props => props.theme.accentColor};
@@ -38,20 +40,23 @@ export const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${props => props.theme.overViewBgColor};
   padding: 10px 20px;
   border-radius: 10px;
+
 `;
 const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   span:first-child {
     font-size: 10px;
     font-weight: 400;
     text-transform: uppercase;
     margin-bottom: 5px;
   }
+
 `;
 const Description = styled.p`
   margin: 20px 0px;
@@ -62,22 +67,33 @@ const Tabs = styled.div`
   grid-template-columns: repeat(2, 1fr);
   margin: 25px 0px;
   gap: 10px;
+
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
+
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${props => props.theme.overViewBgColor};
   padding: 7px 0px;
   border-radius: 10px;
+
   color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+          props.isActive ? props.theme.accentColor : props.theme.textColor};
+
   a {
     display: block;
   }
 `;
+
+const BackBtn = styled.span`
+  position: absolute;
+  left: 0;
+  font-size: 2rem;
+
+`
 
 interface InfoData {
     id: string,
@@ -137,6 +153,7 @@ interface PriceData {
 
 
 function Coin() {
+    const history = useHistory()
     const {coinId} = useParams<RouteParams>();
     const {state} = useLocation<RouteState>();
     const priceMatch = useRouteMatch("/:coinId/price");
@@ -145,13 +162,25 @@ function Coin() {
         ["info", coinId], () => fetchCoinInfo(coinId)
     )
     const {isLoading: tickersLoading, data: tickersData} = useQuery<PriceData>(
-        ["tickers", coinId], () => fetchCoinTickers(coinId)
+        ["tickers", coinId], () => fetchCoinTickers(coinId),
+        {
+            refetchInterval: 5000,
+        }
     )
     const loading = infoLoading || tickersLoading;
 
     return (
         <Container>
+            <Helmet>
+                <title>
+                    {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+                </title>
+            </Helmet>
             <Header>
+                <Link to={"/"}>
+                    <BackBtn>&larr;</BackBtn>
+                </Link>
+
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
                 </Title>
@@ -170,8 +199,8 @@ function Coin() {
                             <span>${infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
-                            <span>Open Source:</span>
-                            <span>{infoData?.open_source ? "Yes" : "No"}</span>
+                            <span>Price:</span>
+                            <span>{`$${tickersData?.quotes.USD.price}`}</span>
                         </OverviewItem>
                     </Overview>
                     <Description>{infoData?.description}</Description>
@@ -197,10 +226,10 @@ function Coin() {
 
                     <Switch>
                         <Route path={`/:coinId/price`}>
-                            <Price />
+                            <Price/>
                         </Route>
                         <Route path={`/:coinId/chart`}>
-                            <Chart />
+                            <Chart coinId={coinId}/>
                         </Route>
                     </Switch>
                 </>

@@ -1,10 +1,13 @@
 import styled from "styled-components";
-import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import {Simulate} from "react-dom/test-utils";
 import load = Simulate.load;
 import { useQuery } from "react-query";
 import {fetchCoins} from "../api";
+import {Helmet} from "react-helmet";
+import {useSetRecoilState} from "recoil";
+import {isDarkAtom} from "../atoms";
 
 export const Container = styled.div`
   padding: 0 20px;
@@ -20,13 +23,12 @@ export const Header = styled.header`
 const CoinList = styled.ul`
 `
 const Coin = styled.li`
-  background-color: white;
-  color: ${props => props.theme.bgColor};
-  margin-bottom: 10px;
-  padding: 20px;
+  background-color: ${(props) => props.theme.cardBgColor};
+  color: ${props => props.theme.textColor};
+  margin-bottom: 20px;
+  padding: 10px;
   border-radius: 15px;
-  box-shadow: 1px 1px 5px whitesmoke;
-
+  border: 1px solid white;
   a {
     padding: 10px;
     transition: color 0.2s ease-in;
@@ -67,14 +69,22 @@ interface ICoin {
     type: string
 }
 
+interface ICoinsProps {
+}
 
 function Coins() {
+    const setDarkAtom = useSetRecoilState(isDarkAtom)
+    const toggleDarkAtom = () => setDarkAtom(prev => !prev)
     const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins)
-
     return (
         <Container>
+            <Helmet>
+                <title>코인</title>
+            </Helmet>
             <Header>
                 <Title>코인</Title>
+                <button onClick={toggleDarkAtom}>Toggle</button>
+
             </Header>
 
             {
