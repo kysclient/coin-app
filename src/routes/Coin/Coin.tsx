@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
 import {useQuery} from "react-query";
-import {fetchCoinInfo, fetchCoinTickers} from "../api";
+import {fetchCoinInfo, fetchCoinTickers} from "../../apis/coin-api";
 import {Helmet} from "react-helmet";
 
 interface RouteParams {
@@ -37,7 +37,7 @@ export const Loader = styled.span`
   display: block;
 `
 
-const Overview = styled.div`
+export const Overview = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: ${props => props.theme.overViewBgColor};
@@ -45,7 +45,7 @@ const Overview = styled.div`
   border-radius: 10px;
 
 `;
-const OverviewItem = styled.div`
+export const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,7 +88,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-const BackBtn = styled.span`
+export const BackBtn = styled.span`
   position: absolute;
   left: 0;
   font-size: 2rem;

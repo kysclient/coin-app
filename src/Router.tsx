@@ -1,6 +1,8 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import Coin from "./routes/Coin";
-import Coins from "./routes/Coins";
+import Coin from "./routes/Coin/Coin";
+import Coins from "./routes/Coin/Coins";
+import Home from "./routes/Home";
+import ToDoList from "./routes/Todo/ToDoList";
 
 interface IRouterProps {
 }
@@ -13,8 +15,10 @@ function Router({}: IRouterProps) {
                     <Coin />
                 </Route>
 
+
                 <Route path="/">
-                    <Coins />
+                    {/*<Coins />*/}
+                    <ToDoList />
                 </Route>
             </Switch>
         </BrowserRouter>

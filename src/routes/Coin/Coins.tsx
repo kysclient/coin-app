@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import {Link, useHistory} from "react-router-dom";
+import {Link, Route, Switch, useHistory} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Simulate} from "react-dom/test-utils";
 import load = Simulate.load;
 import { useQuery } from "react-query";
-import {fetchCoins} from "../api";
+import {fetchCoins} from "../../apis/coin-api";
 import {Helmet} from "react-helmet";
 import {useSetRecoilState} from "recoil";
-import {isDarkAtom} from "../atoms";
+import {isDarkAtom} from "../../atoms";
+import {BackBtn} from "./Coin";
 
 export const Container = styled.div`
   padding: 0 20px;
@@ -15,6 +16,7 @@ export const Container = styled.div`
   margin: 0 auto;
 `
 export const Header = styled.header`
+  position:relative;
   height: 10vh;
   display: flex;
   justify-content: center;
@@ -82,6 +84,10 @@ function Coins() {
                 <title>코인</title>
             </Helmet>
             <Header>
+                {/*<Link to="/">*/}
+                {/*    <BackBtn>&larr;</BackBtn>*/}
+                {/*</Link>*/}
+
                 <Title>코인</Title>
                 <button onClick={toggleDarkAtom}>Toggle</button>
 
@@ -90,6 +96,7 @@ function Coins() {
             {
                 isLoading ? <Loader>Loading...</Loader>
                     :
+                    <>
                     <CoinList>
                         {
                             data?.slice(0, 100).map((coin, idx) => (
@@ -103,11 +110,14 @@ function Coins() {
                                             src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}/>
                                         {coin.name} &rarr;
                                     </Link>
-
                                 </Coin>
                             ))
                         }
                     </CoinList>
+
+
+                    </>
+
             }
         </Container>
     )
