@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
 import {useQuery} from "react-query";
-import {fetchCoinInfo, fetchCoinTickers} from "../../apis/coin-api";
+import {fetchCoinInfo, fetchCoinTickers} from "../../../apis/coin-api";
 import {Helmet} from "react-helmet";
 
 interface RouteParams {

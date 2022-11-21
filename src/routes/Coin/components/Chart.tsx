@@ -1,9 +1,9 @@
 import {useParams} from "react-router-dom";
 import {useQuery} from "react-query";
-import {fetchCoinHistory} from "../../apis/coin-api";
+import {fetchCoinHistory} from "../../../apis/coin-api";
 import ApexChart from "react-apexcharts"
 import {useRecoilValue} from "recoil";
-import {isDarkAtom} from "../../atoms";
+import {isDarkAtom} from "../../../atoms/todo-atoms";
 interface IHistorical {
     time_open: string
     time_close: string

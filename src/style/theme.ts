@@ -5,7 +5,9 @@ export const darkTheme :DefaultTheme = {
     textColor: "#f5f6fa",
     accentColor: "#a29bfe",
     cardBgColor: "transparent",
-    overViewBgColor: "black"
+    overViewBgColor: "black",
+    boardColor:"#DADFE9",
+    cardColor:"white"
 }
 
 export const lightTheme :DefaultTheme = {
@@ -13,5 +15,7 @@ export const lightTheme :DefaultTheme = {
     textColor: "black",
     accentColor: "#9c88ff",
     cardBgColor: "white",
-    overViewBgColor: "#ddd"
+    overViewBgColor: "#ddd",
+    boardColor:"#DADFE9",
+    cardColor:"white"
 }

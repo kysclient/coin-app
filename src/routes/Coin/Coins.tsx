@@ -7,8 +7,8 @@ import { useQuery } from "react-query";
 import {fetchCoins} from "../../apis/coin-api";
 import {Helmet} from "react-helmet";
 import {useSetRecoilState} from "recoil";
-import {isDarkAtom} from "../../atoms";
-import {BackBtn} from "./Coin";
+import {isDarkAtom} from "../../atoms/todo-atoms";
+import {BackBtn} from "./components/Coin";
 
 export const Container = styled.div`
   padding: 0 20px;

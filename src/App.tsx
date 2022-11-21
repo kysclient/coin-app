@@ -6,7 +6,7 @@ import {ReactQueryDevtools} from "react-query/devtools"
 import {GlobalStyle} from "./style/global";
 import {darkTheme, lightTheme} from "./style/theme";
 import {useRecoilValue} from "recoil";
-import {isDarkAtom} from "./atoms";
+import {isDarkAtom} from "./atoms/todo-atoms";
 
 function App() {
     const isDark = useRecoilValue(isDarkAtom)

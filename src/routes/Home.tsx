@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {Container, Overview, OverviewItem} from "./Coin/Coin";
+import {Container, Overview, OverviewItem} from "./Coin/components/Coin";
 import {Header} from "./Coin/Coins";
 
 
