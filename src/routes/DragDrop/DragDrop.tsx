@@ -7,8 +7,7 @@ import Board from "./components/Board";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 680px;
-  width: 100%;
+  width: 100vw;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -16,26 +15,51 @@ const Wrapper = styled.div`
 `;
 
 const Boards = styled.div`
-  display: grid;
   width: 100%;
   gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 `;
+
+
+
 
 
 function DragDrop() {
     const [toDos, setToDos] = useRecoilState(toDoState);
-    const onDragEnd = ({draggableId, destination, source}: DropResult) => {
-        if (!destination) return;
-        // setToDos((oldToDos) => {
-        //     const toDosCopy = [...oldToDos];
-        //     // 1) Delete item on source.index
-        //     toDosCopy.splice(source.index, 1);
-        //     // 2) Put back the item on the destination.index
-        //     toDosCopy.splice(destination?.index, 0, draggableId);
-        //     return toDosCopy;
-        // });
-    }
+    const onDragEnd = (info: DropResult) => {
+        const { destination, draggableId, source } = info;
+        if(!destination) return;
+        if (destination?.droppableId === source.droppableId) {
+            setToDos((allBoards) => {
+                const boardCopy = [...allBoards[source.droppableId]];
+                const taskObj = boardCopy[source.index];
+                boardCopy.splice(source.index, 1);
+                boardCopy.splice(destination?.index, 0, taskObj);
+                return {
+                    ...allBoards,
+                    [source.droppableId]: boardCopy,
+                };
+            });
+        }
+        if (destination.droppableId !== source.droppableId) {
+            setToDos((allBoards) => {
+                const sourceBoard = [...allBoards[source.droppableId]];
+                const taskObj = sourceBoard[source.index];
+                const destinationBoard = [...allBoards[destination.droppableId]];
+                sourceBoard.splice(source.index, 1);
+                destinationBoard.splice(destination?.index, 0, taskObj);
+                return {
+                    ...allBoards,
+                    [source.droppableId]: sourceBoard,
+                    [destination.droppableId]: destinationBoard,
+                };
+            });
+        }
+    };
+
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Wrapper>
